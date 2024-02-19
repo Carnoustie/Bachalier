@@ -122,6 +122,17 @@ public:
         contextPointer->show_text("Time");
         contextPointer->set_line_width(2.0);
         contextPointer->set_source_rgb(107/255.0, 24/255.0, 24/255.0);
+        contextPointer->move_to(xc-140,yc-950);
+        contextPointer->set_font_size(44);
+        contextPointer->show_text("$");
+        contextPointer->set_font_size(24);
+
+        for(int i=1; i<10; i++){
+            contextPointer->move_to(xc-80,yc-i*100);
+            contextPointer->show_text(to_string(i*10));
+            contextPointer->move_to(xc-40,yc-i*100);
+            contextPointer->line_to(xc, yc-i*100);
+        }
 
         if(coordinateBuffer.size()>=1)
             for(int i=1; i< coordinateBuffer.size(); i++){
@@ -174,6 +185,7 @@ int main(int argc, char * argv[]){
     //p.updateBuffer(c2);
     w.add(p);
     w.show_all();
+    w.set_title("Asset Price Dynamics");
     app->run(w);
 
 
