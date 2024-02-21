@@ -134,7 +134,7 @@ public:
         const int height = allocation.get_height();
         Cairo::RefPtr<Cairo::LinearGradient> gradient = Cairo::LinearGradient::create(0, 0, 0, height);
         gradient->add_color_stop_rgba(0, 0.85, 0.65, 0.6, 1); // Light blue at the top
-        gradient->add_color_stop_rgba(1, 0.05, 0.7, 0.9, 1); // White at the bottom
+        gradient->add_color_stop_rgba(1, 0.7, 0.85, 0.95, 1); // White at the bottom
         contextPointer->set_source(gradient);
         contextPointer->rectangle(0, 0, width, height);
         contextPointer->fill();
