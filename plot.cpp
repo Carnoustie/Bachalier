@@ -7,6 +7,8 @@
 #include <cairomm/context.h>
 #include <vector>
 #include <random>
+#include <algorithm>
+
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -50,7 +52,7 @@ public:
 
         // Timer
         auto update_freq = 100; // Update frequency in milliseconds
-        Glib::signal_timeout().connect(sigc::mem_fun(*this, &Plot::on_timeout), update_freq);
+       // Glib::signal_timeout().connect(sigc::mem_fun(*this, &Plot::on_timeout), update_freq);
 
     }
 
@@ -63,6 +65,42 @@ public:
         }
     }
 
+
+    vector<coord> histogram(int N, vector<double> data){
+        sort(data.begin(), data.end());
+        double valueSpan =  data.back() - data.front();
+        for(int k = 0; k<data.size(); k++){
+            cout << "\n\ndata[" <<k<< "] : " << data[k];
+        }
+        double h =  valueSpan/N;
+        double bottom = data[0];
+        double currentVal = bottom;
+        double nextVal = data[1];
+        vector<coord> output(N);
+        int currentIndex = 0;
+        double currentFloor, currentUpper;
+
+        for(int k=0; k<N; k++){
+            output[k].x = (double) k;
+            output[k].y = 0.0;
+            currentFloor = (double) bottom + k*h;
+            currentUpper = (double) currentFloor + h;
+            
+            cout << "\n\nlower : " << currentFloor << " upper: " << currentUpper << "\n\n";
+           cout << "\n\nPriorval: : " << output[k].y;
+
+
+
+            while(currentVal>=currentFloor && currentVal<currentUpper){
+                cout << "\n\ncurrentVal: " << currentVal;
+                output[k].y+= 1.0;
+                currentIndex++;
+                currentVal = (double) data[currentIndex];
+            }
+            cout << "\n\ncounts for " << k << " : " << output[k].y << "\n\n";
+        }
+        return output;
+    }
 
 
     
@@ -95,7 +133,7 @@ public:
 
         const int height = allocation.get_height();
         Cairo::RefPtr<Cairo::LinearGradient> gradient = Cairo::LinearGradient::create(0, 0, 0, height);
-        gradient->add_color_stop_rgba(0, 0.45, 0.65, 0.9, 1); // Light blue at the top
+        gradient->add_color_stop_rgba(0, 0.85, 0.65, 0.6, 1); // Light blue at the top
         gradient->add_color_stop_rgba(1, 1, 1, 1, 1); // White at the bottom
         contextPointer->set_source(gradient);
         contextPointer->rectangle(0, 0, width, height);
@@ -114,12 +152,12 @@ public:
         contextPointer->line_to(xc, yc-1000);
         contextPointer->stroke();
         
-        contextPointer->select_font_face("Pacifico", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+        contextPointer->select_font_face("Playfair Display", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
         contextPointer->set_font_size(24);
         contextPointer->move_to(xc+350,yc-960);
-        contextPointer->show_text("Sample Asset Price Dynamics");
+        contextPointer->show_text("Gaussian Histogram");
         contextPointer->move_to(xc+550, yc+40);
-        contextPointer->show_text("Time");
+        contextPointer->show_text("");
         contextPointer->set_line_width(2.0);
         contextPointer->set_source_rgb(107/255.0, 24/255.0, 24/255.0);
         contextPointer->move_to(xc-140,yc-950);
@@ -132,6 +170,8 @@ public:
             contextPointer->show_text(to_string(i*10));
             contextPointer->move_to(xc-40,yc-i*100);
             contextPointer->line_to(xc, yc-i*100);
+
+
         }
 
         if(coordinateBuffer.size()>=1)
@@ -170,15 +210,36 @@ public:
 int main(int argc, char * argv[]){
 
 
-    double gaussian = nd(gen);
 
 
     auto app = Application::create();
+
+
+
+
+
+
     
     Window w;
     w.set_default_size(1600,1360);
     w.move(2000,0);
     Plot p;
+    float sigma = 3;
+    vector<double> samples;
+    for(int k =0; k<100000;k++){
+       double gaussian = sigma*nd(gen);
+       samples.push_back(gaussian);
+      // cout << "\n\nsample: " << samples[k];
+    }
+    //cout << "\n\n\n\n\n\nbreak\n\n\n\n\n\n";
+    sort(samples.begin(),samples.end());
+
+
+
+
+    vector<coord> histExample = p.histogram(700,samples);
+    p.coordinateBuffer = histExample;
+
     //coord c1 = {0,300};
     //coord c2 = {200,550};
     //p.updateBuffer(c1);
