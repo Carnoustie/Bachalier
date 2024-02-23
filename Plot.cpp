@@ -11,6 +11,8 @@
 
 #include "Plot.hpp"
 
+#include <eigen/Eigen/Dense>
+//#include <eigen/Eigen/Sparse>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
