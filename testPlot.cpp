@@ -44,8 +44,9 @@ int main(int argc, char * argv[]){
     //cout << "\n\n\n\n\n\nbreak\n\n\n\n\n\n";
     sort(samples.begin(),samples.end());
     vector<coord> histExample = p.histogram(700,samples);
-    p.addPlot(histExample);
-    
+    //p.addPlot(histExample);
+        
+
     vector<coord> sineBuffer;
 
     for(int k=0;k<1000;k++){
@@ -53,8 +54,15 @@ int main(int argc, char * argv[]){
         sineBuffer.push_back(c);
     }
 
-   // p.addPlot(sineBuffer);
-    //p.coordinateBuffer = sineBuffer;
+    vector<coord> * bp = &sineBuffer;
+
+    vector<coord> newValue = *bp;
+    vector<coord> * hp = &histExample;
+    p.coordinateBuffer = sineBuffer;
+    p.addPlot(bp);
+    p.addPlot(hp);
+    //p.addPlot(sineBffer);
+
 
     //coord c1 = {0,300};
     //coord c2 = {200,550};

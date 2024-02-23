@@ -33,16 +33,22 @@ public:
     Plot(); //Constructor
     
     void updateBuffer(coord c);
-    void addPlot(vector<coord>);
+    void addPlot(vector<coord> * dataPointer);
 
     vector<coord> histogram(int N, vector<double> data);
 
     //vector<double> sample_Path(int N_steps, )
 
     vector<coord> coordinateBuffer;
+    
+
+
+    int numberOfBuffers;
+    
     coord position;
     int lineWidth;
 
+    vector<coord> * coordinateBufferPointers[100];
 private:
     void drawAxes(const Cairo::RefPtr<Cairo::Context>& contextPointer);
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& contextPointer) override;

@@ -36,6 +36,7 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
     int lineWidth;
 
     Plot::Plot(){
+        numberOfBuffers = 0;
         set_size_request(640,480); 
         lineWidth = 1000;
         coordinateBuffer = vector<coord>();
@@ -48,8 +49,9 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
 
     }
 
-    void Plot::addPlot(vector<coord> data){
-        coordinateBuffer = data;
+    void Plot::addPlot(vector<coord> * dataPointer){
+        coordinateBufferPointers[numberOfBuffers] = dataPointer;
+        numberOfBuffers++;
     }
 
     void Plot::updateBuffer(coord c){
@@ -173,22 +175,29 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
 
         }
 
-        if(coordinateBuffer.size()>=1)
-            for(int i=1; i< coordinateBuffer.size(); i++){
-                //cout << "\n\n" << "hit" << xc << "  " << yc <<"\n\n";
-                //cout << "\n\nxc and yc: " << xc << "  " << yc << "\n\n";
-               // contextPointer->move_to(xc+300,yc-300);
-               // contextPointer->line_to(xc+301, yc-301);
-                //cout << "\n\nfrom x:"<< xc + coordinateBuffer[i-1].x << "     from y: " << yc - coordinateBuffer[i-1].y << "\n\n"; 
-                //cout << "\n\nto x:"<< xc + coordinateBuffer[i].x << "     to y: " << yc - coordinateBuffer[i].y << "\n\n"; 
+        vector<coord> cb;
+        for(int k = 0; k<numberOfBuffers;k++){
+            
+            cb = * coordinateBufferPointers[k];
 
-                contextPointer->move_to(xc+200 +coordinateBuffer[i-1].x, yc-200-coordinateBuffer[i-1].y);
-                contextPointer->line_to(xc+ +200+ coordinateBuffer[i].x, yc-200 - coordinateBuffer[i].y);
-            }
-        contextPointer->stroke();
+            if(cb.size()>=1)
+                for(int i=1; i< cb.size(); i++){
+                    //cout << "\n\n" << "hit" << xc << "  " << yc <<"\n\n";
+                    //cout << "\n\nxc and yc: " << xc << "  " << yc << "\n\n";
+                   // contextPointer->move_to(xc+300,yc-300);
+                   // contextPointer->line_to(xc+301, yc-301);
+                   // cout << "\n\nfrom x:"<< xc + coordinateBuffer[i-1].x << "     from y: " << yc - coordinateBuffer[i-1].y << "\n\n"; 
+                    //cout << "\n\nfrom x:"<< xc + cb[i-1].x << "     from y: " << yc - cb[i-1].y << "\n\n"; 
+                    //cout << "\n\nto x:"<< xc + coordinateBuffer[i].x << "     to y: " << yc - coordinateBuffer[i].y << "\n\n"; 
 
+                    contextPointer->move_to(xc+200 +cb[i-1].x, yc-200-cb[i-1].y);
+                    contextPointer->line_to(xc+ +200+ cb[i].x, yc-200 - cb[i].y);
+                }
+            contextPointer->stroke();
 
+        }
         return true;
+        
     }
 
     bool Plot::on_timeout(){
