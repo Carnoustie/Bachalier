@@ -48,6 +48,10 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
 
     }
 
+    void Plot::addPlot(vector<coord> data){
+        coordinateBuffer = data;
+    }
+
     void Plot::updateBuffer(coord c){
         if(coordinateBuffer.size()<1000){
             coordinateBuffer.push_back(c);
@@ -62,7 +66,7 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
         sort(data.begin(), data.end());
         double valueSpan =  data.back() - data.front();
         for(int k = 0; k<data.size(); k++){
-            cout << "\n\ndata[" <<k<< "] : " << data[k];
+           // cout << "\n\ndata[" <<k<< "] : " << data[k];
         }
         double h =  valueSpan/N;
         double bottom = data[0];
@@ -78,18 +82,18 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
             currentFloor = (double) bottom + k*h;
             currentUpper = (double) currentFloor + h;
             
-            cout << "\n\nlower : " << currentFloor << " upper: " << currentUpper << "\n\n";
-           cout << "\n\nPriorval: : " << output[k].y;
+            //cout << "\n\nlower : " << currentFloor << " upper: " << currentUpper << "\n\n";
+           //cout << "\n\nPriorval: : " << output[k].y;
 
 
 
             while(currentVal>=currentFloor && currentVal<currentUpper){
-                cout << "\n\ncurrentVal: " << currentVal;
+             //   cout << "\n\ncurrentVal: " << currentVal;
                 output[k].y+= 1.0;
                 currentIndex++;
                 currentVal = (double) data[currentIndex];
             }
-            cout << "\n\ncounts for " << k << " : " << output[k].y << "\n\n";
+           // cout << "\n\ncounts for " << k << " : " << output[k].y << "\n\n";
         }
         return output;
     }

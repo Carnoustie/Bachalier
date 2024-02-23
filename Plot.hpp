@@ -33,6 +33,7 @@ public:
     Plot(); //Constructor
     
     void updateBuffer(coord c);
+    void addPlot(vector<coord>);
 
     vector<coord> histogram(int N, vector<double> data);
 

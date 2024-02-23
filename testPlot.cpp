@@ -34,7 +34,6 @@ int main(int argc, char * argv[]){
     w.set_default_size(1600,1360);
     w.move(2000,0);
     Plot p;
-
     float sigma = 3;
     vector<double> samples;
     for(int k =0; k<100000;k++){
@@ -45,14 +44,17 @@ int main(int argc, char * argv[]){
     //cout << "\n\n\n\n\n\nbreak\n\n\n\n\n\n";
     sort(samples.begin(),samples.end());
     vector<coord> histExample = p.histogram(700,samples);
-    p.coordinateBuffer = histExample;
-
+    p.addPlot(histExample);
+    
     vector<coord> sineBuffer;
-    for(int k=0;k<500;k++){
-        coord c = { (double) k, 40*sin(0.01*k)};
+
+    for(int k=0;k<1000;k++){
+        coord c = { (double) k, 100*sin(0.04*k)};
         sineBuffer.push_back(c);
     }
-    p.coordinateBuffer = sineBuffer;
+
+   // p.addPlot(sineBuffer);
+    //p.coordinateBuffer = sineBuffer;
 
     //coord c1 = {0,300};
     //coord c2 = {200,550};
