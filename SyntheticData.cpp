@@ -63,6 +63,9 @@ Eigen::VectorXd ItoProccess(int dim, double timeSpan, double timeStep, Eigen::Ve
     for(int k=0; k<N; k++){
 
 
+
+        //cout << "hej";
+
         nextX = priorX + stepX;
         priorX = nextX;
     
