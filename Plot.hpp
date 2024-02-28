@@ -25,7 +25,6 @@ struct coord{
 };
 
 
-
 class Plot : public Gtk::DrawingArea{
 
 public:
@@ -47,8 +46,10 @@ public:
     
     coord position;
     int lineWidth;
-
+  
     vector<coord> * coordinateBufferPointers[100];
+
+    char title[100];
 private:
     void drawAxes(const Cairo::RefPtr<Cairo::Context>& contextPointer);
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& contextPointer) override;

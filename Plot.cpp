@@ -8,54 +8,51 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-
 #include "Plot.hpp"
-
-#include <eigen/Eigen/Dense>
+#include <Eigen/Dense>
+#include <cstring>
 //#include <eigen/Eigen/Sparse>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <thread>
-
 
 using namespace std;
 using namespace Gtk;
 
-/*
-random_device rd{}; //True number generator from hardware noise
-mt19937 gen{rd()}; //Mersenne twister to output Uniform distribution given random integers from rd.
-normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sampling using Uniform distribution
-*/
 
 
 
 
-
-    vector<coord> coordinateBuffer;
-    coord position;
+    vector<coord> coordinateBuffer; //holds two-dimensional data points
+    coord position; //current position for real-time plots 
     int lineWidth;
+    //char title[];
 
     Plot::Plot(){
-        numberOfBuffers = 0;
-        set_size_request(640,480); 
+        //title = "Please set title";
+        strcpy(title, "Please set title");
+        numberOfBuffers = 0; //Initialize number of plots to zero
+        set_size_request(640,480);  
         lineWidth = 1000;
-        coordinateBuffer = vector<coord>();
+        coordinateBuffer = vector<coord>();  //Allocate memory for coordinateBuffer
         //position.x = 400;
         //position.y = 1020;
 
         // Timer
-        auto update_freq = 100; // Update frequency in milliseconds
+        auto update_freq = 100; // Update frequency in milliseconds for real-time plots
        // Glib::signal_timeout().connect(sigc::mem_fun(*this, &Plot::on_timeout), update_freq);
 
     }
 
+    /*arg1: A pointer to a coordinate buffer (i.e a pointer to a data series of x/y- coordinates)
+    Return: Void
+    Side effects: Appends the data series to the collection of data series held in "coordinateBufferPointers" */
     void Plot::addPlot(vector<coord> * dataPointer){
         coordinateBufferPointers[numberOfBuffers] = dataPointer;
         numberOfBuffers++;
     }
 
+
+    /*Arg1: A single coordinate
+    Return: Void
+    Side Effects: For real time data, appends new data to the right end of the x-axis*/
     void Plot::updateBuffer(coord c){
         if(coordinateBuffer.size()<1000){
             coordinateBuffer.push_back(c);
@@ -66,6 +63,11 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
     }
 
 
+    
+    /*Arg1: Number of desired bins
+    /*Arg2: data series of coordinates
+    Return: A Vector of coordinates ready for plotting the histogram
+    Side Effects: None */
     vector<coord> Plot::histogram(int N, vector<double> data){
         sort(data.begin(), data.end());
         double valueSpan =  data.back() - data.front();
@@ -86,30 +88,18 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
             currentFloor = (double) bottom + k*h;
             currentUpper = (double) currentFloor + h;
             
-            //cout << "\n\nlower : " << currentFloor << " upper: " << currentUpper << "\n\n";
-           //cout << "\n\nPriorval: : " << output[k].y;
-
-
-
             while(currentVal>=currentFloor && currentVal<currentUpper){
-             //   cout << "\n\ncurrentVal: " << currentVal;
                 output[k].y+= 1.0;
                 currentIndex++;
                 currentVal = (double) data[currentIndex];
             }
-           // cout << "\n\ncounts for " << k << " : " << output[k].y << "\n\n";
         }
         return output;
     }
 
-
-    /*
-    vector<double> sample_Path(int N_steps, double, mu, double sigma){
-
-    }
-*/ 
-
-    
+    /*Arg1: A pointer to an abstract Cairo-object that enables setting of plot graphics. See Cairo docs for more details
+    Return: Void 
+    Side Effects: Draws the x-y axes of the plotting window */
     void Plot::drawAxes(const Cairo::RefPtr<Cairo::Context>& contextPointer){
         Allocation allocation = get_allocation();
         const int width = allocation.get_width();
@@ -124,12 +114,11 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
         contextPointer->move_to(xc, yc+5);
         contextPointer->line_to(xc, yc-1000);
         contextPointer->stroke();
-
-
-
     }
 
-
+    /*Arg1: A pointer to an abstract Cairo-object that enables setting of plot graphics. See Cairo docs for more details
+    Return: True on sucess, False on error 
+    Side Effects: Draws the backround of the plotting window as well as the content of all the data buffers out to the plotting window*/
     bool Plot::on_draw(const Cairo::RefPtr<Cairo::Context>& contextPointer) {
         Allocation allocation = get_allocation();
         const int width = allocation.get_width();
@@ -158,9 +147,9 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
         contextPointer->select_font_face("Playfair Display", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
         contextPointer->set_font_size(24);
         contextPointer->move_to(xc+350,yc-960);
-        contextPointer->show_text("Gaussian Histogram");
+        contextPointer->show_text(title);
         contextPointer->move_to(xc+550, yc+40);
-        contextPointer->show_text("");
+        contextPointer->show_text("time");
         contextPointer->set_line_width(2.0);
         contextPointer->set_source_rgb(107/255.0, 24/255.0, 24/255.0);
         contextPointer->move_to(xc-140,yc-950);
@@ -202,6 +191,7 @@ normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sam
         
     }
 
+    // For dynamic plotting. To-do 
     bool Plot::on_timeout(){
        /* float sigma = 3.0;
         double gaussian = sigma*nd(gen);

@@ -9,8 +9,8 @@
 #include <random>
 #include <algorithm>
 
-#include "Plot.hpp"
-#include <eigen/Eigen/Dense>
+//#include "Plot.hpp"
+#include <Eigen/Dense>
 //#include <eigen/Eigen/Sparse>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -26,11 +26,42 @@ using namespace Gtk;
 random_device rd{}; //True number generator from hardware noise
 mt19937 gen{rd()}; //Mersenne twister to output Uniform distribution given random integers from rd.
 normal_distribution<> nd{0.0, 1.0}; //Gaussian number generator from Inverse Sampling using Uniform distribution
-vector<coord> examplePath(800);
+
+struct coord{
+    double x;
+    double y;
+};
 
 
 //Independent Increments
 //
+
+
+
+vector<coord> BrownianPath(double duration, double stepsize){
+    int N_steps = round(duration/stepsize);
+    vector<coord> path(N_steps);
+    
+    double priorY = 0.0;
+    double currentY = 0.0;
+
+    double priorX = 0.0;
+    double currentX = 0.0;
+
+    double dy;
+    double dx;
+    double sigma = sqrt(stepsize);
+    for(int k=0; k<N_steps; k++){
+        path[k].y = currentY;
+        path[k].x = currentX;
+        double dy = sigma*nd(gen); //Gaussian step with brownian property sigma = root(dt)
+        currentY = priorY + dy;
+        currentX = priorX + stepsize;
+        priorY = currentY;
+        priorX = currentX;
+    }
+    return path;
+}
 
 Eigen::VectorXd GaussianVector(int dim, double mu, double sigma){
     Eigen::VectorXd gv(dim);
@@ -56,7 +87,6 @@ Eigen::VectorXd ItoProccess(int dim, double timeSpan, double timeStep, Eigen::Ve
     Eigen::VectorXd gaussianIncrement;
     double rootStep = sqrt(timeStep);
     
-    cout << "\n\nN: " << N << "\n\n";
     
     coord forTest;
 
@@ -76,9 +106,7 @@ Eigen::VectorXd ItoProccess(int dim, double timeSpan, double timeStep, Eigen::Ve
         forTest.x = nextX(4);
         forTest.y = nextY(4);
 
-        cout <<"\n\nx: " << forTest.x  << "\n\n"; 
-        cout <<"\n\ny: " <<  forTest.y <<"\n\n"; 
-        examplePath[k] = forTest;
+        //examplePath[k] = forTest;
 
 
         //currentPoint.x = nextX;
@@ -108,7 +136,7 @@ Eigen::MatrixXd GaussianMatrix(int rows, int cols, double mu, double sigma){
 }
 
 
-
+/*
 int main(int argc, char * argv[]){
 
     Eigen::VectorXd gv = GaussianVector(5, 2, 5);
@@ -141,3 +169,4 @@ int main(int argc, char * argv[]){
 
 
 }
+*/

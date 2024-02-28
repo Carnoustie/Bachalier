@@ -9,7 +9,9 @@
 #include <random>
 #include <algorithm>
 
-#include "Plot.hpp"
+//#include "Plot.hpp"
+#include <Eigen/Dense>
+//#include <eigen/Eigen/Sparse>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -21,3 +23,8 @@
 using namespace std;
 using namespace Gtk;
 
+
+Eigen::VectorXd ItoProccess(int dim, double timeSpan, double timeStep, Eigen::VectorXd mu, Eigen::MatrixXd sigma);
+Eigen::MatrixXd GaussianMatrix(int rows, int cols, double mu, double sigma);
+Eigen::VectorXd GaussianVector(int dim, double mu, double sigma);
+vector<coord> BrownianPath(double duration, double stepsize);
