@@ -8,16 +8,8 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-
-//#include "Plot.hpp"
 #include <Eigen/Dense>
-//#include <eigen/Eigen/Sparse>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <thread>
 
 
 using namespace std;

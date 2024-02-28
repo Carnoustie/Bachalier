@@ -10,12 +10,6 @@
 #include <algorithm>
 
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <thread>
-
 using namespace std;
 using namespace Gtk;
 

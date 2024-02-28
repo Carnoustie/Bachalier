@@ -8,11 +8,9 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-
 #include "Plot.hpp"
 #include "SyntheticData.hpp"
 #include <Eigen/Dense>
-//#include <eigen/Eigen/Sparse>
 
 using namespace std;
 using namespace Gtk;

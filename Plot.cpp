@@ -11,7 +11,6 @@
 #include "Plot.hpp"
 #include <Eigen/Dense>
 #include <cstring>
-//#include <eigen/Eigen/Sparse>
 
 using namespace std;
 using namespace Gtk;
