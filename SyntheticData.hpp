@@ -28,3 +28,4 @@ Eigen::VectorXd ItoProccess(int dim, double timeSpan, double timeStep, Eigen::Ve
 Eigen::MatrixXd GaussianMatrix(int rows, int cols, double mu, double sigma);
 Eigen::VectorXd GaussianVector(int dim, double mu, double sigma);
 vector<coord> BrownianPath(double duration, double stepsize);
+vector<coord> GeometricBrownianPath(double duration, double stepsize, double mu, double sigma, double IPO_price);

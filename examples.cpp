@@ -18,6 +18,11 @@ using namespace std;
 using namespace Gtk;
 
 
+
+
+
+
+
 int main(int argc, char * argv []){
 
     Eigen::VectorXd gv = GaussianVector(5, 2, 5); //Example Gaussian Vector
@@ -35,6 +40,7 @@ int main(int argc, char * argv []){
     cout << "\n\n\n\n\n\nExample end prices with multidimensional Ito model:\n\n" << samplePrices << "\n\n";
     
     vector<coord> exampleBrownianPath = BrownianPath(800.0,0.1); //Generate Example Brownian Motion for plotting.
+    vector<coord> exampleStockPricePath = GeometricBrownianPath(800, 0.1, 0.0008, 0.024, 150.55); //Generate Example Geometric Brownian Motion for plotting.
     auto app = Application::create();
     Window w;
     w.set_default_size(1600,1360);
@@ -42,10 +48,25 @@ int main(int argc, char * argv []){
     Plot p;
     
     p.addPlot(&exampleBrownianPath);
+    p.addPlot(&exampleStockPricePath);
     
+
+    vector<coord> sineBuffer;
+
+    for(int k=0;k<1000;k++){
+        coord c = { (double) k, 100*sin(0.04*k)};
+        sineBuffer.push_back(c);
+    }
+
+//    vector<coord> * bp = &sineBuffer;
+    
+    p.addPlot(&sineBuffer);
+
     w.add(p);
     w.show_all();
-    w.set_title("Example brownian motion");
-    strcpy(p.title, "Example brownian motion");
+    w.set_title("Example brownian motions and sine curve overlapping");
+    strcpy(p.title, "Example brownian motions and sine curve overlapping");
+
+
     app->run(w);
 }

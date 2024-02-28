@@ -37,6 +37,43 @@ struct coord{
 //
 
 
+vector<coord> GeometricBrownianPath(double duration, double stepsize, double mu, double sigma, double IPO_price){
+    int N_steps = round(duration/stepsize);
+    vector<coord> output(N_steps);
+    
+    double prevY = IPO_price;
+    double currY = IPO_price;
+
+    double prevX = 0.0;
+    double currX = 0.0;
+
+    cout << "\n\nFactor: " << currY;
+    double dy;
+    double dx;
+    double rootStep = sqrt(stepsize);
+    for(int k=0; k<N_steps; k++){
+
+        double factor = exp( (mu-sigma*sigma/2)*stepsize + sigma* rootStep*nd(gen));
+
+        cout << "\n\ncurrY: " << prevY << "         factor: " << factor;
+        currY = (double) prevY*factor;
+        currX = prevX + stepsize;
+        prevY = currY;
+        prevX = currX; 
+        output[k].y = currY;
+        output[k].x = currX;
+    }
+
+    for(int k=0; k<N_steps; k++){
+//        cout << "\n\n\n\ny = " << path[k].y << "\n\n";
+  //      cout << "\n\nx = " << path[k].x << "\n\n";
+    }
+
+
+    return output;
+}
+
+
 
 vector<coord> BrownianPath(double duration, double stepsize){
     int N_steps = round(duration/stepsize);

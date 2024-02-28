@@ -1,1 +1,1 @@
-g++ -o p plot.cpp `pkg-config gtkmm-3.0 giomm-2.4 --cflags --libs`
+g++ -o ex examples.cpp SyntheticData.cpp Plot.cpp `pkg-config gtkmm-3.0 giomm-2.4 --cflags --libs` -I./eigen

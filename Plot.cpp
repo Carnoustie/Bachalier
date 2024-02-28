@@ -63,7 +63,7 @@ using namespace Gtk;
     }
 
 
-    
+ 
     /*Arg1: Number of desired bins
     /*Arg2: data series of coordinates
     Return: A Vector of coordinates ready for plotting the histogram
@@ -159,7 +159,7 @@ using namespace Gtk;
 
         for(int i=1; i<10; i++){
             contextPointer->move_to(xc-80,yc-i*100);
-            contextPointer->show_text(to_string(i*10));
+            contextPointer->show_text(to_string(i*10-20));
             contextPointer->move_to(xc-40,yc-i*100);
             contextPointer->line_to(xc, yc-i*100);
 
@@ -186,8 +186,8 @@ using namespace Gtk;
                     //cout << "\n\nfrom x:"<< xc + cb[i-1].x << "     from y: " << yc - cb[i-1].y << "\n\n"; 
                     //cout << "\n\nto x:"<< xc + coordinateBuffer[i].x << "     to y: " << yc - coordinateBuffer[i].y << "\n\n"; 
 
-                    contextPointer->move_to(xc+200 +cb[i-1].x, yc-200-cb[i-1].y);
-                    contextPointer->line_to(xc+ +200+ cb[i].x, yc-200 - cb[i].y);
+                    contextPointer->move_to(xc +cb[i-1].x, yc-200-cb[i-1].y);
+                    contextPointer->line_to(xc+ cb[i].x, yc-200 - cb[i].y);
                 }
             contextPointer->stroke();
 
