@@ -9,7 +9,7 @@
 #include <random>
 #include <algorithm>
 #include "Plot.hpp"
-#include <Eigen/Dense>
+#include <eigen/Eigen/Dense>
 #include <cstring>
 
 using namespace std;

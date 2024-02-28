@@ -10,7 +10,7 @@
 #include <algorithm>
 #include "Plot.hpp"
 #include "SyntheticData.hpp"
-#include <Eigen/Dense>
+#include <eigen/Eigen/Dense>
 
 using namespace std;
 using namespace Gtk;

@@ -8,7 +8,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-#include <Eigen/Dense>
+#include <eigen/Eigen/Dense>
 
 
 using namespace std;
