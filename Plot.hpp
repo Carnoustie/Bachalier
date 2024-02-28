@@ -48,7 +48,8 @@ public:
     int lineWidth;
   
     vector<coord> * coordinateBufferPointers[100];
-
+    
+    double X_axis_span;
     char title[100];
 private:
     void drawAxes(const Cairo::RefPtr<Cairo::Context>& contextPointer);

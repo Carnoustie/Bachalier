@@ -23,10 +23,10 @@ using namespace Gtk;
     vector<coord> coordinateBuffer; //holds two-dimensional data points
     coord position; //current position for real-time plots 
     int lineWidth;
-    //char title[];
 
     Plot::Plot(){
         //title = "Please set title";
+        X_axis_span = 1000.0;
         strcpy(title, "Please set title");
         numberOfBuffers = 0; //Initialize number of plots to zero
         set_size_request(640,480);  
@@ -148,7 +148,7 @@ using namespace Gtk;
         contextPointer->set_font_size(24);
         contextPointer->move_to(xc+350,yc-960);
         contextPointer->show_text(title);
-        contextPointer->move_to(xc+550, yc+40);
+        contextPointer->move_to(xc+550, yc+80);
         contextPointer->show_text("time");
         contextPointer->set_line_width(2.0);
         contextPointer->set_source_rgb(107/255.0, 24/255.0, 24/255.0);
@@ -162,6 +162,11 @@ using namespace Gtk;
             contextPointer->show_text(to_string(i*10));
             contextPointer->move_to(xc-40,yc-i*100);
             contextPointer->line_to(xc, yc-i*100);
+
+            contextPointer->move_to(xc+i*100,yc+40);
+            contextPointer->show_text(to_string(i*10));
+            contextPointer->move_to(xc+i*100,yc+20);
+            contextPointer->line_to(xc+i*100, yc);
 
 
         }
